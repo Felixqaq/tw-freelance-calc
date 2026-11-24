@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://felixqaq.github.io/tw-freelance-calc/sitemap.xml
