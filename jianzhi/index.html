@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://felixqaq.github.io/tw-freelance-calc/jianzhi/">
+<meta property="og:title" content="兼職薪資實拿計算機｜5% 預扣、補充保費一次算好">
+<meta property="og:description" content="兼職、打工、鐘點費以 50 薪資所得發放：單次達 90,501 元預扣 5%，達基本工資 29,500 元扣 2.11% 補充保費。輸入金額算出實拿，依 2026 年規定。">
+<meta property="og:url" content="https://felixqaq.github.io/tw-freelance-calc/jianzhi/">
+<meta property="og:type" content="website">
+<title>兼職薪資實拿計算機｜5% 預扣、二代健保補充保費試算（2026）</title>
+<meta name="description" content="兼職、打工、鐘點費以 50 薪資所得發放：單次達 90,501 元預扣 5%，達基本工資 29,500 元扣 2.11% 補充保費。輸入金額算出實拿，依 2026 年規定。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a single "receipt slip" calculator up top, then a narrow reading column of rules, FAQ and sources. Palette borrows the pale green of Taiwan withholding slips. */
+:root{
+  --bg:#f3f6f4; --paper:#ffffff; --ink:#14211c; --muted:#5a6b64; --line:#cfdcd5;
+  --accent:#0b6b55; --accent-soft:#e1f0ea; --warn:#9a5b00; --warn-soft:#fbf0dc; --neg:#a3352b;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1714; --paper:#16211d; --ink:#e4eee9; --muted:#9aaea5; --line:#2a3a33;
+  --accent:#52c7a4; --accent-soft:#1b3a30; --warn:#e9b25a; --warn-soft:#3a2d14; --neg:#ef8a7f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1714; --paper:#16211d; --ink:#e4eee9; --muted:#9aaea5; --line:#2a3a33;
+  --accent:#52c7a4; --accent-soft:#1b3a30; --warn:#e9b25a; --warn-soft:#3a2d14; --neg:#ef8a7f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:880px;margin:0 auto}
+header{padding-block:40px 20px}
+.eyebrow{font-size:13px;letter-spacing:.08em;color:var(--accent);font-weight:700}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.25;margin:6px 0 10px;font-weight:900;text-wrap:balance}
+.lede{color:var(--muted);max-width:40em;margin:0}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:24px}
+@media (max-width:720px){.calc{grid-template-columns:minmax(0,1fr)}}
+.inputs{padding:24px;display:flex;flex-direction:column;gap:18px;border-right:1px dashed var(--line)}
+@media (max-width:720px){.inputs{border-right:0;border-bottom:1px dashed var(--line)}}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+legend,.lbl{font-weight:700;font-size:14px;margin-bottom:6px;padding:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer;background:var(--bg)}
+.seg input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.money{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0 12px}
+.money span{color:var(--muted);font-size:14px}
+.money input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-family:var(--f-num);font-size:24px;padding:10px 8px;outline:none}
+.money:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{margin-top:5px;accent-color:var(--accent)}
+.slip{padding:24px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(var(--paper),var(--paper))}
+.slip h2{font-size:14px;margin:0 0 8px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dotted var(--line);font-size:15px}
+.row b{font-family:var(--f-num);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row.minus b{color:var(--neg)}
+.row small{display:block;color:var(--muted);font-size:12px}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:14px}
+.total span{font-weight:700}
+.total b{font-family:var(--f-num);font-size:clamp(28px,6vw,36px);font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.note{margin-top:10px;font-size:13px;border-radius:8px;padding:10px 12px;background:var(--warn-soft);color:var(--ink)}
+.note:empty{display:none}
+.cta{margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--accent-soft);border-radius:14px;padding:20px 24px}
+@media (max-width:620px){.cta{grid-template-columns:minmax(0,1fr)}}
+.cta h3{margin:0 0 4px;font-size:18px}
+.cta p{margin:0;font-size:14px;color:var(--muted)}
+.btn{display:inline-block;background:var(--accent);color:var(--paper);text-decoration:none;border-radius:10px;padding:10px 18px;font-weight:700;white-space:nowrap}
+.btn[aria-disabled="true"]{opacity:.6;cursor:default}
+article{max-width:40em;margin:40px auto 0}
+article h2{font-size:22px;margin:40px 0 10px;text-wrap:balance}
+article h3{font-size:17px;margin:24px 0 6px}
+.tbl{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-weight:700}
+footer{max-width:40em;margin:48px auto 0;font-size:13px;color:var(--muted)}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.total b{transition:color .2s}}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.nav a{font-size:13px;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--muted)}.nav a[aria-current]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-soft);font-weight:700}
+</style>
+
+<style>html{color-scheme:light}@media (prefers-color-scheme: dark){html{color-scheme:dark}}body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <nav class="nav" aria-label="其他計算機"><a href="../">接案 9A 執行業務</a><a href="../jianzhi/" aria-current="page">兼職薪資 50</a><a href="../gaofei/">稿費・講演 9B</a></nav>
+<div class="eyebrow">兼職・打工・鐘點費　2026（115 年度）規定</div>
+  <h1>兼職薪資實拿計算機</h1>
+  <p class="lede">兼職薪水 30,000，入帳只有 29,367？兼職所得單次達基本工資就要扣二代健保補充保費，金額更高還要預扣 5% 所得稅。輸入金額就能算出實拿，也能反推該領多少。</p>
+</header>
+
+<section class="calc" aria-label="計算機">
+  <form class="inputs" id="f" onsubmit="return false">
+    <fieldset>
+      <legend>所得類別（看對方開的扣繳憑單）</legend>
+      <div class="seg" role="radiogroup">
+        <input type="radio" name="type" id="t9a" value="9A"><label for="t9a">9A 執行業務</label>
+        <input type="radio" name="type" id="t9b" value="9B"><label for="t9b">9B 稿費・講演</label>
+        <input type="radio" name="type" id="t50" value="50" checked><label for="t50">50 兼職薪資</label>
+      </div>
+      <p class="hint" id="typeHint"></p>
+    </fieldset>
+    <fieldset>
+      <legend>我想算</legend>
+      <div class="seg" role="radiogroup">
+        <input type="radio" name="mode" id="mFwd" value="fwd" checked><label for="mFwd">報價 → 實拿</label>
+        <input type="radio" name="mode" id="mRev" value="rev"><label for="mRev">想實拿 → 該報價</label>
+      </div>
+    </fieldset>
+    <div>
+      <label class="lbl" for="amt" id="amtLbl">報價金額（對方給付總額）</label>
+      <div class="money"><span>NT$</span><input id="amt" inputmode="numeric" autocomplete="off" value="30,000" aria-describedby="amtLbl"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="exempt"><span>我可以免扣補充保費<br><span class="hint">例如在職業工會投保並提出證明，或不具健保投保資格。不確定就不要勾。</span></span></label>
+  </form>
+
+  <div class="slip" aria-live="polite">
+    <h2>試算結果</h2>
+    <div class="row"><span>給付總額（報價）</span><b id="oGross">—</b></div>
+    <div class="row minus"><span>預扣所得稅<small id="oTaxRule"></small></span><b id="oTax">—</b></div>
+    <div class="row minus"><span>二代健保補充保費<small id="oNhiRule"></small></span><b id="oNhi">—</b></div>
+    <div class="total"><span>實際入帳</span><b id="oNet">—</b></div>
+    <div class="note" id="oNote"></div>
+  </div>
+</section>
+
+<aside class="cta">
+  <div>
+    <h3>每個案子都要算一次？用試算表一次管好</h3>
+    <p>Google 試算表範本：報價單、請款單、全年收入紀錄自動算扣繳和補充保費，年底報稅直接看總表。</p>
+  </div>
+  <a class="btn" id="buy" href="https://portaly.cc/felix4852" target="_blank" rel="noopener">NT$149 購買範本</a>
+</aside>
+
+<article>
+  <h2>兼職薪資會被扣哪些錢</h2>
+  <p>公司把你當兼職人員發薪水時，會開「50 薪資所得」的扣繳憑單。這筆錢不是你的主要投保單位發的，所以要另外扣二代健保補充保費；金額夠大時還要先預扣所得稅。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>項目</th><th>什麼時候扣</th><th>扣多少</th></tr></thead>
+    <tbody>
+      <tr><td>預扣所得稅</td><td>單次給付達 90,501 元（115 年度起扣標準）</td><td class="n">5%</td></tr>
+      <tr><td>二代健保補充保費</td><td>單次給付達基本工資 29,500 元</td><td class="n">2.11%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="hint">補充保費每次最多算到 1,000 萬元。以上是中華民國境內居住者的規定。</p>
+  <h2>常見問題</h2>
+  <details><summary>兼職領 28,000 元會被扣嗎？</summary><p>不會。28,000 沒有達到基本工資 29,500，補充保費不用扣；也遠低於 90,501，所得稅也不用預扣，實拿 28,000。</p></details>
+  <details><summary>兼職領 30,000 元實拿多少？</summary><p>達到 29,500，要扣補充保費 633 元，所得稅不用預扣，實拿 29,367 元。</p></details>
+  <details><summary>一次領 10 萬元實拿多少？</summary><p>預扣 5% 所得稅 5,000 元，加上補充保費 2,110 元，實拿 92,890 元。預扣的稅隔年五月報稅時多退少補。</p></details>
+  <details><summary>為什麼正職薪水不扣補充保費，兼職要扣？</summary><p>正職薪水是你的投保薪資，已經繳一般健保費。兼職是投保單位以外的收入，所以由付款的單位另外扣 2.11% 補充保費。</p></details>
+  <details><summary>我是接案，不是兼職，該用哪個計算機？</summary><p>如果對方開的是 9A 執行業務所得，請用<a href="../">接案實拿計算機</a>；稿費、講演鐘點費請用<a href="../gaofei/">稿費實拿計算機</a>。</p></details>
+  <h2>資料來源</h2>
+  <ul class="hint">
+    <li><a href="https://www.nhi.gov.tw/ch/dl-26432-f744a781bf4043618d0bd5b4a4c5518a-1.pdf" rel="noopener" target="_blank">衛生福利部中央健康保險署：補充保險費問答（115.1.5 版）</a></li>
+    <li><a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/national/individual-income-tax/withheld-rule/rule/NM11BZY" rel="noopener" target="_blank">財政部稅務入口網：薪資所得如何辦理扣繳</a></li>
+  </ul>
+</article>
+
+<footer>本頁試算僅供參考，金額以付款單位實際扣繳和主管機關公告為準。最後更新：2026 年 11 月。</footer>
+</div>
+
+<script>
+const RULES={
+  "9A":{taxRate:.10,taxOver:20000,nhiAt:20000,hint:"設計、翻譯、寫程式、攝影、顧問等自己接案的報酬。",taxTxt:"給付超過 20,000 扣 10%",nhiTxt:"單次達 20,000 扣 2.11%"},
+  "9B":{taxRate:.10,taxOver:20000,nhiAt:20000,hint:"稿費、版稅、講演鐘點費。每年 18 萬內報稅時免稅，但付款時照樣預扣。",taxTxt:"給付超過 20,000 扣 10%",nhiTxt:"單次達 20,000 扣 2.11%"},
+  "50":{taxRate:.05,taxAt:90501,nhiAt:29500,hint:"對方把你當兼職員工發薪水，不是正職。",taxTxt:"單次達 90,501 扣 5%",nhiTxt:"單次達 29,500 扣 2.11%"}
+};
+const NHI=.0211, NHI_CAP=1e7;
+function calc(gross,type,exempt){
+  const r=RULES[type]; let tax=0;
+  if(type==="50"){ if(gross>=r.taxAt) tax=Math.round(gross*r.taxRate); }
+  else { const t=Math.round(gross*r.taxRate); if(t>2000) tax=t; }
+  const nhi=(!exempt&&gross>=r.nhiAt)?Math.round(Math.min(gross,NHI_CAP)*NHI):0;
+  return {gross,tax,nhi,net:gross-tax-nhi};
+}
+function reverse(target,type,exempt){
+  let g=target; while(calc(g,type,exempt).net<target) g++;
+  return calc(g,type,exempt);
+}
+const $=id=>document.getElementById(id), fmt=n=>"NT$ "+n.toLocaleString("zh-TW");
+function val(name){return document.querySelector(`input[name=${name}]:checked`).value}
+function num(){return Math.max(0,Math.floor(Number($("amt").value.replace(/[^\d]/g,""))||0))}
+function render(){
+  const type=val("type"), mode=val("mode"), exempt=$("exempt").checked, n=num(), r=RULES[type];
+  $("typeHint").textContent=r.hint;
+  $("amtLbl").textContent= mode==="fwd"?"報價金額（對方給付總額）":"想實際入帳的金額";
+  const res= mode==="fwd"?calc(n,type,exempt):reverse(n,type,exempt);
+  $("oGross").textContent=fmt(res.gross); $("oTax").textContent=res.tax?"− "+fmt(res.tax):"0";
+  $("oNhi").textContent=res.nhi?"− "+fmt(res.nhi):"0"; $("oNet").textContent=fmt(res.net);
+  $("oTaxRule").textContent=r.taxTxt; $("oNhiRule").textContent=exempt?"已勾選免扣":r.nhiTxt;
+  let note="";
+  if(type!=="50" && res.gross===20000 && res.nhi) note="剛好 20,000：所得稅不扣，但補充保費要扣。";
+  else if(type!=="50" && res.tax>0 && res.gross<=20500) note="只多出一點點就超過 20,000，會被扣 10% 所得稅。這筆稅隔年報稅時多退少補。";
+  if(mode==="rev" && n>0) note=(note?note+" ":"")+`要實拿 ${fmt(n)}，報價至少 ${fmt(res.gross)}。`;
+  $("oNote").textContent=note;
+}
+$("amt").addEventListener("input",e=>{const n=num(); e.target.value=n?n.toLocaleString("zh-TW"):""; render();});
+document.querySelectorAll("#f input").forEach(i=>i.addEventListener("change",render));
+render();
+</script>
+
+</body>
+</html>
